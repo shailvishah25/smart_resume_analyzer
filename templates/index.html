@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+<div class="bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md transition hover:scale-105">
+  <h1 class="text-2xl font-bold mb-4 text-center">Smart Resume Analyzer</h1>
+
+  <input type="file" id="resume" class="mb-4 w-full text-sm" />
+
+  <button onclick="uploadResume()"
+    class="bg-purple-600 hover:bg-purple-700 transition px-4 py-2 rounded w-full">
+    Analyze Resume
+  </button>
+
+  <pre id="result" class="mt-4 text-sm whitespace-pre-wrap"></pre>
+</div>
+
+<script>
+async function uploadResume() {
+  const file = document.getElementById("resume").files[0];
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("http://127.0.0.1:8000/analyze", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  document.getElementById("result").innerText = data.analysis;
+}
+</script>
+
+</body>
+</html>
